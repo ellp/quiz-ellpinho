@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Quiz/Quiz1.unity
     guid: 6c2a4121c9f37fc4185650814f363e95
+  - enabled: 1
+    path: Assets/Quiz/Quiz2.unity
+    guid: 7fda0737d20e0894d80509cdded2de89
   m_configObjects: {}
