@@ -10,17 +10,16 @@ using TMPro;
 public class QuizSequenciaControlador : MonoBehaviour
 {
     public string arqLido = "Quiz1";
-    private List<String> perguntas = new List<string>(), respostas = new List<string>(), erradas = new List<string>();
-    private GameObject[] questoes;
+    private List<string> perguntas = new List<string>(), respostas = new List<string>(), erradas = new List<string>();
+    private List<GameObject> questoes = new List<GameObject>();
     public GameObject[] questPrefab;
     private int questAt = 0;
     
     private void Awake()
     {
-        LerArquivoQuiz(Application.dataPath + "/Resources/QuizesArq/" + arqLido + ".txt");
-        questoes = new GameObject[perguntas.Count];
+        LerArquivoQuiz(Application.dataPath + "/StreamingAssets/QuizesArq/" + arqLido + ".txt");
         CriarQuestoes();
-        for (int i = 0; i < questoes.Length; i++)
+        for (int i = 0; i < perguntas.Count; i++)
         {
             QuizQuestaoControler questao = questoes[i].GetComponent<QuizQuestaoControler>();
             questao.pergunta = perguntas[i];
@@ -34,16 +33,16 @@ public class QuizSequenciaControlador : MonoBehaviour
     }
     private void CriarQuestoes()
     {
-        for (int i = 0; i < questoes.Length; i++)
+        for (int i = 0; i < perguntas.Count; i++)
         {
-            questoes[i] = Instantiate(questPrefab[0], transform.parent);
+            questoes.Add(Instantiate(questPrefab[0], transform.parent));
             questoes[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(-1900,0);
         }
     }
     public void TrocarQuestao()
     {
 
-        if (questAt == questoes.Length)
+        if (questAt == questoes.Count)
         {
             SceneManager.LoadScene("Quiz");
             return;
@@ -55,11 +54,10 @@ public class QuizSequenciaControlador : MonoBehaviour
     }
     private void LerArquivoQuiz(string caminho)
     {
-        Debug.LogWarning(caminho);
         List<String> linhas = new List<string>();
         try
         {
-            linhas.AddRange(File.ReadAllLines(caminho));
+            linhas.AddRange(File.ReadAllLines(caminho,Encoding.UTF8));
         }
         catch (Exception e)
         {
