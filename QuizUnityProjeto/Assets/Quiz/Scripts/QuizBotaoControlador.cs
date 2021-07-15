@@ -8,10 +8,15 @@ using UnityEngine.SceneManagement;
 public class QuizBotaoControlador : MonoBehaviour
 {
     public Sprite btnNormal, btnPress;
-    public TextMeshProUGUI txtNormal, txtPress;
+    public TextMeshProUGUI txtNormal, txtPress, txtDel;
+    public TMP_Dropdown dpD;
     private Image img;
     private void Start()
     {
+        if(dpD != null)
+        {
+            AtualizarDpD();
+        }
         img = GetComponent<Image>();
         Invoke("AttText", 0.1f);//chamar a função com delay para prevenir bug
     }
@@ -33,8 +38,36 @@ public class QuizBotaoControlador : MonoBehaviour
     {
         SceneManager.LoadScene(cena);
     }
-    public void AttText()
+    private void AttText()
     {
         txtPress.text = txtNormal.text;
+    }
+    public void TrocarQuiz(int i)
+    {
+        QuizVerArqs.Instance.quizDest = QuizVerArqs.Instance.quizes[i];
+    }
+    public void DeletarQuiz()
+    {
+        QuizVerArqs.Instance.DeletarQuiz();
+        QuizVerArqs.Instance.VerificarArquivos();
+        AtualizarDpD();
+    }
+    private void AtualizarDpD()
+    {
+        QuizVerArqs.Instance.VerificarArquivos();
+        dpD.ClearOptions();
+        dpD.AddOptions(QuizVerArqs.Instance.quizes);
+        for (int i = 0; i < QuizVerArqs.Instance.quizes.Count; i++)
+        {
+            if (QuizVerArqs.Instance.quizes[i] == QuizVerArqs.Instance.quizDest)
+            {
+                dpD.value = i;
+                break;
+            }
+        }
+    }
+    public void AttTextDel()
+    {
+        txtDel.text = "Tem certeza que deseja deletar o arquivo <color=green>" + QuizVerArqs.Instance.quizDest + "</color> ??\nEsse processo é irreverssível!!!";
     }
 }
