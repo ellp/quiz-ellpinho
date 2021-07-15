@@ -13,13 +13,14 @@ public class QuizCriadorControlador : MonoBehaviour
     public GameObject preFab;
     public int questAtual = 0;
     public TextMeshProUGUI numQuest;
-    public string arqLido = "Quiz1";
+    public string arqLido;
     public bool carregarArq = false;
     public TMP_InputField nomeSaida;
     private void Start()
     {
-        if(carregarArq)
-            LerArquivoQuiz(Application.dataPath + "/StreamingAssets/QuizesArq/" + arqLido + ".txt");
+        arqLido = QuizVerArqs.Instance.quizDest;
+        if(arqLido != "")
+            LerArquivoQuiz(Application.dataPath + "/StreamingAssets/QuizesArq/" + arqLido);
     }
     public void ProxQuest()
     {
@@ -127,7 +128,7 @@ public class QuizCriadorControlador : MonoBehaviour
         List<String> linhas = new List<string>();
         for (int i = 0; i < questoes.Count; i++)
         {
-            linhas.Add(perguntas[i]);
+            linhas.Add(perguntas[i].Replace(Environment.NewLine," "));
             linhas.Add(respostas[i]);
             linhas.Add(erradas[i*3]);
             linhas.Add(erradas[i*3 + 1]);
@@ -139,5 +140,12 @@ public class QuizCriadorControlador : MonoBehaviour
     public void CarregarMenu()
     {
         SceneManager.LoadScene("Quiz");
+    }
+    public void AttNomeSaida()
+    {
+        if (nomeSaida.text == "" && QuizVerArqs.Instance.quizDest != QuizVerArqs.Instance.nomeArqVazio)
+        {
+            nomeSaida.text = QuizVerArqs.Instance.quizDest.Replace(".txt","");
+        }
     }
 }

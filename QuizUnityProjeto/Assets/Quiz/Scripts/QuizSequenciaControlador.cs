@@ -9,7 +9,7 @@ using TMPro;
 
 public class QuizSequenciaControlador : MonoBehaviour
 {
-    public string arqLido = "Quiz1";
+    public string arqLido = "Quiz1.txt";
     private List<string> perguntas = new List<string>(), respostas = new List<string>(), erradas = new List<string>();
     private List<GameObject> questoes = new List<GameObject>();
     public GameObject[] questPrefab;
@@ -17,7 +17,8 @@ public class QuizSequenciaControlador : MonoBehaviour
     
     private void Awake()
     {
-        LerArquivoQuiz(Application.dataPath + "/StreamingAssets/QuizesArq/" + arqLido + ".txt");
+        arqLido = QuizVerArqs.Instance.quizDest;
+        LerArquivoQuiz(Application.dataPath + "/StreamingAssets/QuizesArq/" + arqLido);
         CriarQuestoes();
         for (int i = 0; i < perguntas.Count; i++)
         {
